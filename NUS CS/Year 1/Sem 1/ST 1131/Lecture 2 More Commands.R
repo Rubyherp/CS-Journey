@@ -44,8 +44,51 @@ gender = data.frame(female, male)
   female male
 1     16   18
 
-gender = gender / (16+18) * 100; gender  #AS A PERCENTAGE / PROPORTION
+gender = gender / (16+18) * 100; gender     #AS A PERCENTAGE / PROPORTION
 
     female     male
 1 47.05882 52.94118
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!           OTHER IMPORTANT COMMANDS               !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:
+attach(data);
+detach(data);
+data$Age;    #PRINT THE WHOLE "AGE" COLUMN FROM DATA
+data[1:5,];    #PRINT DATA ROWS 1 TO 5. !!!!!!!!! NOTICE THE COMMA AT THE END TO INDICATE INCLUDE ALL COLUMNS. SAME FOR THE ROWS
+data[data$Gender == "M",]    #PRINT ALL ROWS WHERE COLUMN = GENDER == "M"
+&    #TO INDICATE "AND"
+|    #TO INDICATE "OR"
+!=    #TO INDICATE "NOT EQUAL TO"
+is.na(data)    #TO TURN MATRIX DATA INTO TRUE/FALSE DEPENDING ON WHETHER THERE IS AN ERROR/MISSING INPUT IN THE DATA
+max(data)
+min(data)
+sum(data)
+cor(data)
+mean(data)
+range(data)
+colMeans(data)    #MEAN OF ALL COLUMNS
+sort(data)
+which(data$Gender == "M")    #RETURN INDEXES OF ALL ROWS WHERE GENDER == "M"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
