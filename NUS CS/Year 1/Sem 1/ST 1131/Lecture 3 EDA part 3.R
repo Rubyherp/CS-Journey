@@ -153,6 +153,8 @@ summary(mark)
 # LENGTH OF THE VECTOR "MARK"
 length(mark)
 
+################# CAN COMPARE MEAN AND MEDIAN TO SEE WHETHER THE DATA IS LEFT OR RIGHT SKEWED!!!!!!!!!! ###################
+
 min(mark)
 max(mark)
 mean(mark)
