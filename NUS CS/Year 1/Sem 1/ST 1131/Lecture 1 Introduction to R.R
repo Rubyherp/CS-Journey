@@ -1,44 +1,34 @@
 3+4
 4+5
-x <- 3 
-x
+x <- 3 ; x
 # <- / = works for out level
 
-3-> x
-x
+3-> x; x
 
-y = "hello"
-y
+y = "hello"; y
 z = TRUE
 z = True
 z = T
 z
 
 
-x = c(0,1,2,3)
-x
+x = c(0,1,2,3); x
 
-y = c("a","B", "c", "D")
-y
+y = c("a","B", "c", "D"); y
 
-z = c(T, FALSE, TRUE, F)
-z
+z = c(T, FALSE, TRUE, F); z
 
-x = c(x, 4)
-x
+x = c(x, 4); x
 
-x = c(-1, x, 5)
-x
+x = c(-1, x, 5); x
 #c is concat. -1 added infront followed byx and 5
 
-y = c(y, 0,1)
-y 
+y = c(y, 0,1); y 
 # In y 0 and 1 is now a string
 
 
 #how to create a blank vector of len 5
-x = numeric(5)
-x
+x = numeric(5); x
 #merge x and y
 xy = c (x,y)
 xyz = c(x,y,z,6,10)
@@ -60,15 +50,12 @@ x
 x = seq(from=2, to=11, by=2) #to inclusive, give multiples of 2, from 2 to 11
 
 # 5 numbers of equal gaps.
-x = seq(from=2, to=11, length=5)
-x
+x = seq(from=2, to=11, length=5); x
 
 #if dont write from, to and by, it will assume it to be 
-x = seq(2,20,4)
-x
+x = seq(2,20,4); x
 #if want change lenght instead of by, change it manully
-x = seq(2,20,length = 4)
-x
+x = seq(2,20,length = 4); x
 
 
 #X is a vector 1 to 5, each multiplied by 2
@@ -150,7 +137,24 @@ m%*%n
 
 
 
+# Construct star_wars_matrix
+box_office <- c(460.998, 314.4, 290.475, 247.900, 309.306, 165.8)
+region <- c("US", "non-US")
+titles <- c("A New Hope", 
+            "The Empire Strikes Back", 
+            "Return of the Jedi")
+               
+# dimnames means DIMENSION NAMES
+star_wars_matrix <- matrix(box_office, 
+                      nrow = 3, byrow = TRUE,
+                      dimnames = list(titles, region))
+star_wars_matrix
 
+# The worldwide box office figures
+worldwide_vector <- rowSums(star_wars_matrix)
+
+# Bind the new variable worldwide_vector as a column to star_wars_matrix
+all_wars_matrix <- cbind(star_wars_matrix, worldwide_vector)
 
 
 
