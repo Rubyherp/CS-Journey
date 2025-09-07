@@ -269,7 +269,69 @@ $reviews
 
 
 
-    
+
+
+################## dplyr is loaded for you, and food_consumption is available.
+# Calculate the mode of consumption for all countries in the food_consumption dataset by counting and sorting values in descending.
+food_consumption %>% count(consumption, sort = TRUE)
+
+
+################## The dplyr and ggplot2 libraries are loaded and food_consumption is available.
+food_consumption %>%
+  # Filter for rice food category
+  filter(food_category == "rice") %>%
+  # Create a histogram of CO2 emissions
+  ggplot(aes(co2_emission)) +
+    geom_histogram()  
+
+
+food_consumption %>%
+  # Filter for rice food category
+  filter(food_category == "rice") %>% 
+  # Summarize the mean_co2 and median_co2
+  summarise(mean_co2 = mean(co2_emission),
+            median_co2 = median(co2_emission))
+
+
+
+
+
+################### Boxplot using ggplot and without %>%
+ggplot(msleep, aes(y = sleep_total)) +
+  geom_boxplot()
+
+# Adjust Quantile's default percentile, by adding probs, which takes in a vector of values
+quantile(msleep$sleep_total, probs = c(0.2, 0.4, 0.6, 0.8, 1))
+# OR          Use seq(start, end, step) / seq(from, to, by)
+quantile(msleep$sleep_total, probs = seq(0, 1, 0.2))
+
+
+################## !!!!!!!!!!!!!!!!!!!! FINDING THE OUTLIERS !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+# first find the Interquantile range
+iqr <- quantile(msleep$bodywt, 0.75) - quantile(msleep$bodywt, 0.25)
+lower_threshold <- quantile(msleep%bodywt, 0.25) - 1.5 * iqr
+upper_threshold <- quantile(msleep%bodywt, 0.75) + 1.5 * iqr
+
+msleep %>%
+            filter( bodywt < lower_threshold | bodywt > upper_threshold) %>%
+                        select(name, vore, sleep_total, bodywt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
