@@ -317,8 +317,22 @@ msleep %>%
             filter( bodywt < lower_threshold | bodywt > upper_threshold) %>%
                         select(name, vore, sleep_total, bodywt
 
+                               
+################# Short Summnary of learnt ##########################################
+food_consumption %>% 
+  group_by(food_category) %>% 
+  summarize(var_co2 = var(co2_emission),
+            sd_co2 = sd(co2_emission))
 
+ggplot(food_consumption, aes(co2_emission)) +
+  geom_histogram() +
+  facet_wrap(~ food_category)
 
+#Variance: The average of the squared distances from each data point to the mean. It's a measure of how spread out the data is. The formula involves squaring the differences between each data point and the mean, summing these squares, and dividing by the number of data points minus one. High variance indicates more spread out data.
+#Standard Deviation (SD): The square root of the variance, providing a measure of spread that is in the same units as the data. It's easier to interpret than variance because it relates more directly to the data points.
+#Mean Absolute Deviation (MAD): Similar to standard deviation but uses absolute values instead of squaring the distances. It treats all deviations from the mean equally, without giving extra weight to larger deviations like the standard deviation does.
+#Quartiles and Quantiles: Methods to divide the data into equal parts. Quartiles split the data into four parts, and the Interquartile Range (IQR) is the difference between the first and third quartiles, offering a measure of spread that is robust against outliers.
+#Outliers: Points that are significantly different from the rest of the data. They can be identified using the IQR; any data point more than 1.5 times the IQR below the first quartile or above the third quartile is considered an outlier.
 
 
 
