@@ -263,14 +263,77 @@ $reviews
 2    4.0   IMDb2 A truly brilliant and scary film from Stanley Kubrick
 3    5.0   IMDb3                 A masterpiece of psychological horror
 
-
-################### !!!!!!!!!!!!!  Important to remember: to select elements from vectors, you use single square brackets: [ ]. Don't mix them up! 
-################### !!!!!!!!!!!!!  You can also refer to the names of the components, with [[ ]] or with the $ sign.
-
+#!!!!!!!!!!!!!  Important to remember: to select elements from vectors, you use single square brackets: [ ]. Don't mix them up! 
+#!!!!!!!!!!!!!  You can also refer to the names of the components, with [[ ]] or with the $ sign.
 
 
 
 
+
+Summarise each group down to one row
+
+
+summarise() creates a new data frame. It returns one row for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarising all observations in the input. It will contain one column for each grouping variable and one column for each of the summary statistics that you have specified.
+
+summarise() and summarize() are synonyms.
+Usage
+summarise(.data, ..., .by = NULL, .groups = NULL)
+
+Examples
+# A summary applied to ungrouped tbl returns a single row
+mtcars %>%
+  summarise(mean = mean(disp), n = n())
+#>       mean  n
+#> 1 230.7219 32
+
+# Usually, you'll want to group first
+mtcars %>%
+  group_by(cyl) %>%
+  summarise(mean = mean(disp), n = n())
+#> # A tibble: 3 × 3
+#>     cyl  mean     n
+#>   <dbl> <dbl> <int>
+#> 1     4  105.    11
+#> 2     6  183.     7
+#> 3     8  353.    14
+
+
+
+
+
+Group by one or more variables
+Most data operations are done on groups defined by variables. group_by() takes an existing tbl and converts it into a grouped tbl where operations are performed "by group". ungroup() removes grouping.
+Usage
+group_by(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+ungroup(x, ...)
+Ordering
+Currently, group_by() internally orders the groups in ascending order. This results in ordered output from functions that aggregate groups, such as summarise().
+When used as grouping columns, character vectors are ordered in the C locale for performance and reproducibility across R sessions. If the resulting ordering of your grouped operation matters and is dependent on the locale, you should follow up the grouped operation with an explicit call to arrange() and set the .locale argument. For example:
+data %>%
+  group_by(chr) %>%
+  summarise(avg = mean(x)) %>%
+  arrange(chr, .locale = "en")
+visit https://dplyr.tidyverse.org/reference/group_by.html
+
+
+
+
+
+
+Keep rows that match a condition
+The filter() function is used to subset a data frame, retaining all rows that satisfy your conditions. To be retained, the row must produce a value of TRUE for all conditions. Note that when a condition evaluates to NA the row will be dropped, unlike base subsetting with [.]
+                                                                                                                                                                                                                                                                                 
+Usage
+filter(.data, ..., .by = NULL, .preserve = FALSE
+
+Useful filter functions
+There are many functions and operators that are useful when constructing the expressions used to filter the data:
+    ==, >, >= etc
+    &, |, !, xor()
+    is.na()
+    between(), near()
+
+                                                                                                                                                                                                                                                                                 
 ################## dplyr is loaded for you, and food_consumption is available.
 # Calculate the mode of consumption for all countries in the food_consumption dataset by counting and sorting values in descending.
 food_consumption %>% count(consumption, sort = TRUE)
@@ -294,6 +357,7 @@ food_consumption %>%
 
 
 
+       
 
 
 ################### Boxplot using ggplot and without %>%
@@ -317,6 +381,7 @@ msleep %>%
             filter( bodywt < lower_threshold | bodywt > upper_threshold) %>%
                         select(name, vore, sleep_total, bodywt
 
+
                                
 ################# Short Summnary of learnt ##########################################
 food_consumption %>% 
@@ -338,7 +403,6 @@ ggplot(food_consumption, aes(co2_emission)) +
 
 
 
-
 # Sampling from a data frame
 name = c("Amir", "Brian", "Claire", "Damian")
 n_sales - c(178, 126, 75, 69)
@@ -355,19 +419,69 @@ set.seed(5) #will make sure same sample is chosen each time
 sales_counts %>%
    sample_n(2, replacement = TRUE) 
 
-####### Independent events: Two events are independent if the probability of the second event isnt affected by the outcome of the first event
-####### Sampling with replacement = each pick is independent
+Independent events: Two events are independent if the probability of the second event isnt affected by the outcome of the first event
+Sampling with replacement = each pick is independent
 
-####### Dependent events: Two events are dependent if the probability of the second event is affected by the outcome of the first event
-####### Sampling WITHOUT replacement = each pick is dependent
+Dependent events: Two events are dependent if the probability of the second event is affected by the outcome of the first event
+Sampling WITHOUT replacement = each pick is dependent
 
 
 
+Create, modify, and delete columns
+mutate() creates new columns that are functions of existing variables. It can also modify (if the name is the same as an existing column) and delete columns (by setting their value to NULL).
+
+Examples
+# Newly created variables are available immediately
+starwars %>%
+  select(name, mass) %>%
+  mutate(
+    mass2 = mass * 2,
+    mass2_squared = mass2 * mass2
+  )
+#> # A tibble: 87 × 4
+#>    name                mass mass2 mass2_squared
+#>    <chr>              <dbl> <dbl>         <dbl>
+#>  1 Luke Skywalker        77   154         23716
+#>  2 C-3PO                 75   150         22500
+#>  3 R2-D2                 32    64          4096
+#>  4 Darth Vader          136   272         73984
+#>  5 Leia Organa           49    98          9604
+#>  6 Owen Lars            120   240         57600
+#>  7 Beru Whitesun Lars    75   150         22500
+#>  8 R5-D4                 32    64          4096
+#>  9 Biggs Darklighter     84   168         28224
+#> 10 Obi-Wan Kenobi        77   154         23716
+#> # ℹ 77 more rows
+                                                                                           
+# As well as adding new variables, you can use mutate() to
+# remove variables and modify existing variables.
+
+                                                                                           
 # Calculate probability of picking a deal with each product
 amir_deals %>%
   count(product) %>%
   mutate(prob = n/sum(n))
-  
+
+
+
+# GGPLOT
+Arguments
+data
+    Default dataset to use for plot. If not already a data.frame, will be converted to one by fortify(). If not specified, must be supplied in each layer added to the plot.
+mapping
+    Default list of aesthetic mappings to use for plot. If not specified, must be supplied in each layer added to the plot.
+
+Details
+ggplot() is used to construct the initial plot object, and is almost always followed by a plus sign (+) to add components to the plot.
+There are three common patterns used to invoke ggplot():
+    ggplot(data = df, mapping = aes(x, y, other aesthetics))
+    ggplot(data = df)
+    ggplot()
+The first pattern is recommended if all layers use the same data and the same set of aesthetics, although this method can also be used when adding a layer using data from another data frame.
+The second pattern specifies the default data frame to use for the plot, but no aesthetics are defined up front. This is useful when one data frame is used predominantly for the plot, but the aesthetics vary from one layer to another.
+The third pattern initializes a skeleton ggplot object, which is fleshed out as layers are added. This is useful when multiple data frames are used to produce different layers, as is often the case in complex graphics.
+The data = and mapping = specifications in the arguments are optional (and are often omitted in practice), so long as the data and the mapping values are passed into the function in the right order. In the examples below, however, they are left in place for clarity.
+
 
 # Create a histogram of group_size
 ggplot(data = restaurant_groups, mapping = aes(group_size)) +    geom_histogram(bins = 5)
@@ -412,6 +526,41 @@ punif(7, min = 0, max = 12, lower.tail = FALSE)
 
 P(4 <= wait time <= 7) = P(wait time <= 7) - P(wait time <= 4)
 punif(7, min = 0, max = 12) - punif(4, min = 0, max = 12)
+                               
+
+#!!!!!!!!!!!!!!!!! punif() and runif() !!!!!!!!!!!!!!!!!#######################
+The runif() function
+The runif() function generates random numbers from a uniform distribution. A uniform distribution is a distribution in which all values are equally likely. The runif() function takes three arguments:
+    n: the number of random numbers to generate
+    min: the lower bound of the distribution
+    max: the upper bound of the distribution
+The default values for min and max are 0 and 1, respectively.
+
+Here is an example of how to use the runif() function to generate 10 random numbers from a uniform distribution between 0 and 1:
+set.seed(123)
+r <- runif(10)
+                               
+Output:
+print(r)
+ [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055
+ [8] 0.8924190 0.5514350 0.4566147
+
+The runif() function can also be used to generate random numbers from other distributions, such as the normal distribution, the Poisson distribution, and the binomial distribution.            
+The punif() function
+The punif() function calculates the cumulative probability density function (CDF) of the uniform distribution. The CDF is the probability that a random variable will be less than or equal to a certain value.
+The punif() function takes three arguments:
+    x: the value at which to calculate the CDF
+    min: the lower bound of the distribution
+    max: the upper bound of the distribution
+
+Here is an example of how to use the punif() function to calculate the CDF of a uniform distribution between 0 and 1 at the value 0.5:
+set.seed(123)
+p <- punif(0.5, min = 0, max = 1)
+                               
+Output:
+print(p)
+[1] 0.5
+This means that there is a 50% chance that a random variable from this distribution will be less than or equal to 0.5.
 
 
 
@@ -421,3 +570,22 @@ punif(7, min = 0, max = 12) - punif(4, min = 0, max = 12)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               
