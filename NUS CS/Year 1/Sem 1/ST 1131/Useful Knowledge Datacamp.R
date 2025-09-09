@@ -25,7 +25,45 @@ all_wars_matrix <- cbind(star_wars_matrix, worldwide_vector)
 
 
 
-################ FACTORS
+########################################## FACTORS #####################################
+
+The function factor is used to encode a vector as a factor (the terms ‘category’ and ‘enumerated type’ are also used for factors). If argument ordered is TRUE, the factor levels are assumed to be ordered. For compatibility with S there is also a function ordered.
+
+is.factor, is.ordered, as.factor and as.ordered are the membership and coercion functions for these classes.
+            
+Usage
+factor(x = character(), levels, labels = levels,
+       exclude = NA, ordered = is.ordered(x), nmax = NA)
+
+ordered(x, …)
+is.factor(x)
+is.ordered(x)
+as.factor(x)
+as.ordered(x)
+addNA(x, ifany = FALSE)
+
+Arguments
+x: a vector of data, usually taking a small number of distinct values.
+
+levels: an optional vector of the unique values (as character strings) that x might have taken. The default is the unique set of values taken by as.character(x), sorted into increasing order of x. Note that this set can be specified as smaller than sort(unique(x)).
+                                                            
+labels: either an optional character vector of labels for the levels (in the same order as levels after removing those in exclude), or a character string of length 1. Duplicated values in labels can be used to map different values of x to the same factor level.
+                                                            
+exclude: a vector of values to be excluded when forming the set of levels. This may be factor with the same level set as x or should be a character.
+                                                            
+ordered: logical flag to determine if the levels should be regarded as ordered (in the order given).
+                                                            
+nmax: an upper bound on the number of levels; see ‘Details’.
+                                                            
+…: (in ordered(.)): any of the above, apart from ordered itself.
+                                                            
+ifany: only add an NA level if it is used, i.e. if any(is.na(x)).
+
+
+Value
+
+factor returns an object of class "factor" which has a set of integer codes the length of x with a "levels" attribute of mode character and unique (!anyDuplicated(.)) entries. If argument ordered is true (or ordered() is used) the result has class c("ordered", "factor"). Undocumentedly for a long time, factor(x) loses all attributes(x) but "names", and resets "levels" and "class".                                                            
+
 # Animals
 animals_vector <- c("Elephant", "Giraffe", "Donkey", "Horse")
 factor_animals_vector <- factor(animals_vector)
@@ -36,8 +74,6 @@ factor_animals_vector
 temperature_vector <- c("High", "Low", "High", "Low", "Medium")
 factor_temperature_vector <- factor(temperature_vector, order = TRUE, levels = c("Low", "Medium", "High"))
 factor_temperature_vector
-
-
 
 
 
@@ -271,10 +307,7 @@ $reviews
 
 
 Summarise each group down to one row
-
-
 summarise() creates a new data frame. It returns one row for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarising all observations in the input. It will contain one column for each grouping variable and one column for each of the summary statistics that you have specified.
-
 summarise() and summarize() are synonyms.
 Usage
 summarise(.data, ..., .by = NULL, .groups = NULL)
@@ -382,6 +415,8 @@ msleep %>%
                         select(name, vore, sleep_total, bodywt
 
 
+
+                               
                                
 ################# Short Summnary of learnt ##########################################
 food_consumption %>% 
@@ -427,6 +462,8 @@ Sampling WITHOUT replacement = each pick is dependent
 
 
 
+
+                               
 Create, modify, and delete columns
 mutate() creates new columns that are functions of existing variables. It can also modify (if the name is the same as an existing column) and delete columns (by setting their value to NULL).
 
@@ -464,7 +501,7 @@ amir_deals %>%
 
 
 
-# GGPLOT
+####################################################### GGPLOT #################################################
 Arguments
 data
     Default dataset to use for plot. If not already a data.frame, will be converted to one by fortify(). If not specified, must be supplied in each layer added to the plot.
@@ -515,7 +552,7 @@ size_distribution %>%
 
                                
 
-
+#######################################################  Continuous Distribution #########################################
 # Finding Probility of a continuous distribution (AREA UNDER GRAPH)
 P(wait time <= 7)
 punif(7, min = 0, max = 12)
@@ -562,27 +599,279 @@ print(p)
 [1] 0.5
 This means that there is a 50% chance that a random variable from this distribution will be less than or equal to 0.5.
 
+                                                                                           
+# Set random seed to 334
+set.seed(334)
+
+# Generate 1000 wait times between 0 and 30 mins, save in time column
+wait_times %>%
+  mutate(time = runif(1000, min = 0, max = 30)) %>%
+  # Create a histogram of simulated times
+  ggplot(aes(time)) +
+  geom_histogram()
+
+
+
+
+                                                                                           
+####################################################### Binomial Distribution ##############################################
+Probability of the number of sucesses in a seqeunce of independent trials
+E.g Number of head in a sequence of coin flips
+Decribed by n and p
+- n: total number of trials
+- p: Probability of success
+                                                
+Examples: 
+
+rbinom(nums of trials, nums of coins, probability of head/success)
+1 = head, 0 = tails
+rbinom(1, 1, 0.5)
+
+                                                                                           
+What is the probability of 7 heads?                                                                                           
+P(heads = 7)?                      
+dbinom(nums heads, num trials, prob of heads)
+dbinom(7, 10, 0.5) = 0.1171
+--> Flip 10 coins, 0.1171 chances of getting 7 heads
+
+
+What is the probability of 7 heads or fewer?                                                                                           
+P(heads <= 7)?      
+pbinom(7, 10, 0.5) = 0.94531
+
+
+What is the probability of more than 7 heads?                                                                                           
+P(heads >= 7)?      
+pbinom(7, 10, 0.5, lower.tail = FALSE) = 0.05468 =  1 - pbinom(7, 10, 0.5) = 0.94531        
+
+Expected Value of a binomial distribution                                                                                           
+Expected values = n x p                                                                                           
+Expected number of heads out of 10 flips = 10 * 0.5 = 5
+
+                                                                                           
+dbinom function
+This function returns the value of the probability density function (pdf) of the binomial distribution given a certain random variable x, number of trials (size), and probability of success on each trial (prob). 
+    Syntax: dbinom(x, size, prob)
+    Parameters:
+        x : a vector of numbers.
+        size : the number of trials.
+        prob : the probability of success of each trial.
+The dbinom function is also used to get the probability of getting a certain number of successes (x) in a certain number of trials (size) where the probability of success on each trial is fixed (prob).
+
+                                                                                           
+rbinom function
+This function generates a vector of binomial distributed random variables given a vector length n, number of trials (size), and probability of success on each trial (prob). 
+    Syntax: rbinom(n, size, prob) 
+    Parameters:
+        n: number of observations.
+        size: the number of trials.
+        prob: the probability of success of each trial.
+
+Example:
+In this example, we are generating a vector with a number of successes of 500 binomial experiments including the 90 trials where the probability of success on each trial is 0.7 and then verifying it by using calculating the mean of the generated vector using the rnorm function in the R.
+gfg <- rbinom(500, size=100, prob=.6)
+mean(gfg)
+                                                                                           
+Output:
+[1] 60.01
+Note: The more random variables we create, the closer the mean number of successes is to the expected number of successes. As the “Expected number of successes” = n*p where n is the number of trials and p is the probability of success on each trial.
+
+
+pbinom function
+This function returns the value of the cumulative density function (cdf) of the binomial distribution given a certain random variable q, number of trials (size), and probability of success on each trial (prob). 
+    Syntax: pbinom(x, size, prob)
+    Parameters:
+        x: a vector of numbers.
+        size: the number of trials.
+        prob: the probability of success of each trial.
+pbinom function returns the area to the left of a given value q in the binomial distribution. If you’re interested in the area to the right of a given value q, you can simply add the argument lower.tail = FALSE
+Syntax:
+pbinom(q, size, prob, lower.tail = FALSE) 
+
+Example 1:
+Under this example, we are calculating the probability to get a head more than 3 times if the coin is flipped fairly 10 times using the pbinom() function. Since the coin is tossed fairly the prob parameter to the function is passed to be 0.5. 
+pbinom(3, size=10, prob=.5, lower.tail=FALSE)
+Output:
+[1] 0.828125
+
+Example 2:
+In this example, we are calculating the probability if a man scores a strike on 30% of his attempts when he bowls, If he bowls 50 times, what is the probability that he scores 30 or fewer strikes using the pbinom() function in R.
+pbinom(30, size=50, prob=.7)
+Output:
+[1] 0.0848026
+
+
+
+
+
+Example:
+Simulating sales deals
+#Assume that Amir usually works on 3 deals per week, and overall, he wins 30% of deals he works on. Each deal has a binary outcome: it's either lost, or won, so you can model his sales deals with a binomial distribution. In this exercise, you'll help Amir simulate a year's worth of his deals so he can better understand his performance.
+qn: 
+Simulate a year's worth of Amir's deals, or 52 weeks of 3 deals each, and store in deals.
+Calculate the mean number of deals he won per week.
+
+# Set random seed to 10
+set.seed(10)
+# Simulate 52 weeks of 3 deals
+deals <- rbinom(52, 3, 0.3)
+# Calculate mean deals won per week
+mean(deals)
+
+# Probability of closing 3 out of 3 deals
+dbinom(3,3,0.3)                                                                                           
+# Probability of closing <= 1 deal out of 3 deals
+pbinom(1,3,0.3)
+# Probability of closing > 1 deal out of 3 deals
+pbinom(1,3,0.3, lower.tail = FALSE)  or  1-pbinom(1,3,0.3)
+
+qn:                                                                                           
+How many sales will be won?
+Now Amir wants to know how many deals he can expect to close each week if his win rate changes. Luckily, you can use your binomial distribution knowledge to help him calculate the expected value in different situations. Recall from the video that the expected value of a binomial distribution can be calculated by n*p.
+# Expected number won with 30% win rate
+won_30pct <- 3 * 0.3
+won_30pct
+
+# Expected number won with 25% win rate
+won_25pct <- 3 * 0.25
+won_25pct
+
+# Expected number won with 35% win rate
+won_35pct <- 3 * 0.35
+won_35pct
+
+
+
+
+
+###################################### Normal Distribution ##########################
+
+Traits
+1. Bellcurve shaped
+2. Symmetrical
+3. Area under curve = 1
+4. Probability of edges never hits 0
+5. Standard normal distribution --> Mean = 0, sd = 1   
+6. 68% falls under 1sd from mean                                 
+7. 95% falls under 2sd from mean
+8. 99.7% falls under 3sd from mean     
+
+What percentage of women are shorter than 154 cm?                                                    
+pnorm(154, mean = 161, sd = 7) = 0.159
+What percentage of women are taller than 154 cm?                                                    
+pnorm(154, mean = 161, sd = 7, lower.tail = FALSE) = 0.8413447
+What percentage of women are 154 - 157 cm?                                                           pnorm(157, mean = 161, sd = 7) - pnorm(154, mean = 161, sd = 7) = 0.1252
+
+What height are 90% of women shorter than?
+qnorm(0.9, mean = 161, sd = 7) = 169.9707                
+What height are 90% of women taller than?
+qnorm(0.9, mean = 161, sd = 7, lower.tail  = FALSE) = 169.9707  
+
+Generating random numbers                                                                            # Generate 10 random heights               
+rnorm(10, mean = 161, sd = 7)                                                                                           
+
+
+dnorm function
+This function returns the value of the probability density function (pdf) of the normal distribution given a certain random variable x, a population mean μ, and the population standard deviation σ. 
+    Syntax; dnorm(x, mean, sd)
+    Parameters:
+        x: vector of quantiles.
+        mean: vector of means.
+        sd: vector standard deviation.
+                                                                                           
+Example:
+In this example, we will be finding the value of the standard normal distribution pdf at x=1 using the dnorm() function in the R.
+                                                                                           
+dnorm(x=1, mean=0, sd=1)
+                                                                                           
+Output:
+[1] 0.2419707
+
+                                                                                           
+pnorm function
+This function returns the value of the cumulative density function (cdf) of the normal distribution given a certain random variable q, a population mean μ, and the population standard deviation σ.
+    Syntax: pnorm(q, mean, sd, lower.tail) 
+    Parameters:
+        q: It is a vector of quantiles.
+        mean: vector of means.
+        sd: vector standard deviation.
+        lower.tail: It is logical; if TRUE (default), probabilities are otherwise
+
+If lower.tail = FALSE take other half of the curve
+                                                                                           
+Example: In this example, we will be calculating the percentage of students at this school who are taller than 75 inches height of males at a certain school is normally distributed with a mean of μ=70 inches and a standard deviation of σ =3 inches using the pnorm() function in the R.
+                                                                                           
+pnorm(75, mean=70, sd=3, lower.tail=FALSE)
+                                                                                           
+Output:
+[1] 0.04779035
+At this school, 4.779% of males are taller than 75 inches.
+
+
+qnorm function
+This function returns the value of the inverse cumulative density function (cdf) of the normal distribution given a certain random variable p, a population mean μ, and the population standard deviation σ.
+    Syntax: qnorm(p, mean = 0, sd = 0, lower.tail = TRUE)
+    Parameters:
+         p: It represents the significance level to be used
+        mean: vector of means.
+        sd: vector standard deviation.
+         lower.tail = TRUE: Then the probability to the left of p in the normal distribution is returned. 
+                                                                                           
+Example:
+In this example, we are calculating the Z-score of the 95th quantile of the standard normal distribution using the qnorm() function in R.
+qnorm(.95, mean=0, sd=1)
+                                                                                           
+Output:
+[1] 1.644854
+                                                                                           
+rnorm function
+This function generates a vector of normally distributed random variables given a vector length n, a population mean μ and population standard deviation σ. 
+    Syntax: rnorm(n, mean, sd) 
+    Parameters:
+        n: number of datasets to be simulated
+        mean: vector of means.
+        sd: vector standard deviation.
+                                                                                           
+Example: In this example, with the use of the rnorm() function we are generating a vector of 10 normally distributed random variables with mean=10 and sd=2.
+rnorm(10, mean = 10, sd = 2)
+                                                                                           
+Output:
+     [1] 10.886837  9.678975 12.668778 10.391915  7.021026 10.697684  9.340888  6.896892 12.067081 11.049609
 
 
 
 
 
 
+                                                                                           
+                                                                                           
+The main difference is that the Binomial distribution is for discrete data (counts of successes in a fixed number of trials) with a finite range of outcomes, while the Normal distribution is for continuous data (like height or temperature) with an infinite range of possible values. 
+A Normal distribution has a symmetric, bell shape, whereas a Binomial distribution can be symmetric or skewed.                 
 
+Binomial Distribution     
+Type of Data: Discrete (only takes on integer values).  What it describes: The number of "successes" in a fixed number of independent trials, where each trial has only two possible outcomes (e.g., heads or tails).  Parameters: The number of trials (\(n\)) and the probability of success (\(p\)) on any single trial.  
+Range of values: Finite, from 0 successes to the total number of trials (\(n\)).  
+Example: The number of correct answers on a 10-question quiz, where each question has a 70% chance of being answered correctly.           
+                                                                                           
+Normal Distribution     
+Type of Data: Continuous (can take on any value within a range).  What it describes: Data that tends to cluster around a central mean, forming a symmetrical bell shape.  
+Parameters: The mean (\(\mu \)) and the variance (\(\sigma ^{2}\)).  Range of values: Theoretically infinite, extending from negative to positive infinity.  
+Example: The heights of adult men or the weights of a certain product.            
+                                    
+When to Use Which     
+#Binomial: When you're counting outcomes of a fixed number of yes/no events.  
+#Normal: When your data is continuous and follows a natural bell curve.            
 
+Relationship      
+When the number of trials (\(n\)) in a binomial distribution is large, and the probability of success (\(p\)) is close to 0.5, the binomial distribution can be approximated by the normal distribution. This is known as the Normal Approximation to the Binomial, which simplifies calculations for large sample sizes.                                                                                           
 
+#Distribution of Amir's sales
+#Since each deal Amir worked on (both won and lost) was different, each was worth a different amount of money. These values are stored in the amount column of amir_deals As part of Amir's performance review, you want to be able to estimate the probability of him selling different amounts, but before you can do this, you'll need to determine what kind of distribution the amount variable follows.
+Both dplyr and ggplot2 libraries are loaded and amir_deals is available.                                                        
 
-
-
-
-
-
-
-
-
-
-
-
+# Histogram of amount with 10 bins
+ggplot(amir_deals, aes(amount)) + geom_histogram(bins = 10)
+                                                                                           
 
 
 
