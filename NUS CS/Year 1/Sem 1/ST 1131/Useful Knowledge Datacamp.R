@@ -339,7 +339,79 @@ ggplot(food_consumption, aes(co2_emission)) +
 
 
 
+# Sampling from a data frame
+name = c("Amir", "Brian", "Claire", "Damian")
+n_sales - c(178, 126, 75, 69)
+sales_counts = data.frame(name, n_sales)
 
+sales_counts %>%
+   sample_n(1) #########!!!!!!!! This chooses randomly, repeating it will give a different row !!!!!!!########
+# Change the input to get change the number of samples
+
+# Setting a random seed
+set.seed(5) #will make sure same sample is chosen each time
+
+# Sampling with replacement --> can get same people multiple time
+sales_counts %>%
+   sample_n(2, replacement = TRUE) 
+
+####### Independent events: Two events are independent if the probability of the second event isnt affected by the outcome of the first event
+####### Sampling with replacement = each pick is independent
+
+####### Dependent events: Two events are dependent if the probability of the second event is affected by the outcome of the first event
+####### Sampling WITHOUT replacement = each pick is dependent
+
+
+
+# Calculate probability of picking a deal with each product
+amir_deals %>%
+  count(product) %>%
+  mutate(prob = n/sum(n))
+  
+
+# Create a histogram of group_size
+ggplot(data = restaurant_groups, mapping = aes(group_size)) +    geom_histogram(bins = 5)
+# OR
+ggplot(restaurant_groups, aes(group_size)) +    geom_histogram(bins = 5)
+# Typically
+ggplot( Data, mapping(using aes = () )) + geom_(type_of_graph)(bins = n)
+# IF DATA IS NOT A DATA FRAME, AND IS A VECTOR, USE fortify() TO MAKE IT A DATAFRAME
+
+
+# Create probability distribution
+size_distribution <- restaurant_groups %>%
+  # Count number of each group size
+  count(group_size) %>%
+  # Calculate probability
+  mutate(probability = n / sum(n))
+size_distribution
+
+# Calculate expected group size
+expected_val <- sum(size_distribution$group_size *
+                    size_distribution$probability)
+expected_val
+
+# Calculate probability of picking group of 4 or more
+size_distribution %>%
+  # Filter for groups of 4 or larger
+  filter(group_size>=4) %>%
+  # Calculate prob_4_or_more by taking sum of probabilities
+  summarise(prob_4_or_more = sum(probability))
+
+
+                               
+
+
+# Finding Probility of a continuous distribution (AREA UNDER GRAPH)
+P(wait time <= 7)
+punif(7, min = 0, max = 12)
+# probability of waiting <= 7 mins = 0.5833
+P(wait time >= 7)
+punif(7, min = 0, max = 12, lower.tail = FALSE)
+# probability of waiting >= 7 mins = 0.41776
+
+P(4 <= wait time <= 7) = P(wait time <= 7) - P(wait time <= 4)
+punif(7, min = 0, max = 12) - punif(4, min = 0, max = 12)
 
 
 
