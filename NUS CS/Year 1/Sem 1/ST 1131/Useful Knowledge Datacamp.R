@@ -1044,9 +1044,38 @@ Number of Hospitalisations in the 2003 SARS outbreak
 
 
 
+Correlation
+x = Explanatory / Independent variable
+x = Response / Dependent variable
 
+Correlation coefficient
+Quantifies the linear relationship between 2 variables
+Number between -1 and 1
+Magnitude corresponds to strength of relationship
+Sign (+ or -) corresponds to direction of relationship
 
+Visualizing relationship
+ggplot(df, aes(x, y)) +                                                                                           
+  geoem_point()
 
+Adding a trendline
+ggplot(df, aes(x, y)) +                                                                                           
+  geoem_point() +
+  geom_smooth(method = "lm", se = FALSE)
+                                                                                           
+lm - linear trend line
+se - FALSE so there is no error margin around the line
+
+cor(df$x, df$y) = cor(df$y, df$x)
+if using correlation with missing values, it will return NA
+to remedy
+cor(df$x, df$y, use = "pairwise.complete.obs")
+
+Many ways to calculate correlation                                                                                           
+Used in this course: Pearson product-moment correlation (r)
+Other variations:
+#Kendall's tau
+#Spearman's rho
 
 
 
