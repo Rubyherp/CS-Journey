@@ -840,9 +840,6 @@ Output:
 
 
 
-
-
-
                                                                                            
                                                                                            
 The main difference is that the Binomial distribution is for discrete data (counts of successes in a fixed number of trials) with a finite range of outcomes, while the Normal distribution is for continuous data (like height or temperature) with an infinite range of possible values. 
@@ -873,8 +870,192 @@ Both dplyr and ggplot2 libraries are loaded and amir_deals is available.
 ggplot(amir_deals, aes(amount)) + geom_histogram(bins = 10)
                                                                                            
 
+                                                                                           
+Simulating sales under new market conditions
+The company's financial analyst is predicting that next quarter, the worth of each sale will increase by 20% and the volatility, or standard deviation, of each sale's worth will increase by 30%. To see what Amir's sales might look like next quarter under these new market conditions, you'll simulate new sales amounts using the normal distribution and store these in the new_sales data frame, which has already been created for you.
+In addition, dplyr and ggplot2 libraries are loaded.
+                                                                                           
+Instructions:
+Currently, Amir's average sale amount is $5000. Calculate what his new average amount will be if it increases by 20% and store this in new_mean.
+new_mean <- 5000*120/100
+
+Amir's current standard deviation is $2000. Calculate what his new standard deviation will be if it increases by 30% and store this in new_sd.
+new_sd <- 2000*130/100
+
+Add a new column called amount to the data frame new_sales, which contains 36 simulated amounts from a normal distribution with a mean of new_mean and a standard deviation of new_sd.
+new_sales <- new_sales %>% 
+  mutate(amount = rnorm(36, new_mean, new_sd))
+
+Plot the distribution of the new_sales amounts using a histogram with 10 bins.
+ggplot(new_sales, aes(amount)) + geom_histogram(bins = 10)
 
 
 
 
+Rolling the dice 5 times
+die <- c(1,2,3,4,5,6)
+sample_of_5 <- sameple(die, 5, replace = TRUE)
+sample_of_5
+Sample vs Sample_n? Sample is used on a vector, while sample_n is on a dataframe
+
+Roll 5 times and take mean
+sample(5, replace = TRUE) %>% mean()
+
+Repeat whole process 10 times
+sample_means <- replicate(10, sample(die, 5, replace = TRUE) %>% mean())
+sample_means
+
+Central Limit Theorem:
+The sampling distribution of a statistic becomes closer to the normal distribution as the number of trials increases.
+
+
+
+
+The CLT in action
+The central limit theorem states that a sampling distribution of a sample statistic approaches the normal distribution as you take more samples, no matter the original distribution being sampled from.
+#In this exercise, you'll focus on the sample mean and see the central limit theorem in action while examining the num_users column of amir_deals more closely, which contains the number of people who intend to use the product Amir is selling.
+Both dplyr and ggplot2 libraries are loaded and amir_deals is available.                                                                                           
+
+# Set seed to 104
+set.seed(104)
+
+# Sample 20 num_users from amir_deals and take mean
+sample(amir_deals$num_users, size = 20, replace = TRUE) %>%
+  mean()
+
+# Repeat the above 100 times
+sample_means <- replicate(100, sample(amir_deals$num_users, size = 20, replace = TRUE) %>% mean())
+
+A data frame called samples has been created for you with a column mean, which contains the values from sample_means. Create a histogram of the mean column with 10 bins.                                                                                           
+# Create data frame for plotting
+samples <- data.frame(mean = sample_means)
+
+# Histogram of sample means
+ggplot(samples, aes(mean)) +
+  geom_histogram(bins = 10)
+
+
+
+
+
+The mean of means
+You want to know what the average number of users (num_users) is per deal, but you want to know this number for the entire company so that you can see if Amir's deals have more or fewer users than the company's average deal. The problem is that over the past year, the company has worked on more than ten thousand deals, so it's not realistic to compile all the data. Instead, you'll estimate the mean by taking several random samples of deals, since this is much easier than collecting data from everyone in the company.
+#The user data for all the company's deals is available in all_deals.
+
+# Set seed to 321
+set.seed(321)
+
+# Take 30 samples of 20 values of num_users, take mean of each sample
+sample_means <- replicate(30, sample(all_deals$num_users, 20) %>% mean())
+
+# Calculate mean of sample_means
+mean(sample_means)
+
+# Calculate mean of num_users in amir_deals
+mean(amir_deals$num_users)
+
+
+
+
+                                                                                           
+Poisson process:
+Events appear to happen at a certain rate, but completely random            
+E.G 
+Number of animals adopted from an animal shelter per week, Number of people arriving at a restaurant per hour, Number of earthquakes in California per year
+
+Poisson distribution:
+Probability of some number of events occurring over a fixed period of time
+E.G
+Probability of >= 5 animals adopted from an animal shelter per week
+Probability of 12 people arriving at a restaurant per hour
+Probability of < 20 earthquakes in California per year
+                                                                                           
+A Poisson distribution is a discrete probability distribution. 
+It gives the probability of an event happening a certain number of times (k) within a given interval of time or space. 
+The Poisson distribution has only one parameter, λ (lambda), which is the mean number of events.
+
+λ = Average number of events per time interval
+
+Probability of a single value                                                                                           
+If the average number of adoptions per week is 8, what is P(Number of adoptions in a week = 5)?
+dpois(5, lambda = 8) = 0.09160366
+
+If the average number of adoptions per week is 8, what is P(Number of adoptions in a week <= 5)?
+ppois(5, lambda = 8) = 0.1912361
+
+If the average number of adoptions per week is 8, what is P(Number of adoptions in a week > 5)?
+ppois(5, lambda = 8, lower.tail = FALSE) = 0.8087639
+
+Sampling from a Poisson distribution
+rpois(10, lambda = 8) 
+
+
+
+                                                                                           
+
+Exponential distribution:
+Probability of time between Poisson events                                                                                           
+E.G
+Probability of > 1 day between adoptions
+Probability of < 10 minutes between restaurants arrivals
+Probability of 6-8 months between earthquakes
+Also uses lambda (rate)
+Continuous (time) vs Poisson distribution which is discrete
+                                                                                           
+Customer service requests                                                                                           
+On average, one customer service ticket is created every 2 minutes
+λ = 0.5 customer service tickets created each minute
+
+How long until a new request is created?
+P(wait < 1 min) = 
+pexp(1, rate = 0.5) = 0.3934
+P(wait > 4 min) =  
+pexp(4, rate = 0.5, lower.tail = FALSE) = 0.1353353
+P(1 min < wait < 4 min) =  
+pexp(4, rate = 0.5) - pexp(1, rate = 0.5) = 0.4711954
+
+Expected value of exponential distribution
+In terms of rate (Poisson):
+λ = 0.5 customer service tickets created each minute (requests per min)
+In terms of time (Exponential):
+1/λ = 1 requests per 2 minutes
+
+
+
+
+t-distribution
+Similar shape as the normal distribution
+Degrees of freedom:
+Has parameter degress of freedom (df) which affects the thickness of the tail
+Lower df = thicker tails, higher standard deviation
+Higher df = Closer to normal distribution
+
+
+
+
+Log-normal distribution
+Variable whose logarithm is normally distributed
+Results in distribution that are skewed
+E.G
+Length of chess games
+Adult blook pressure                                                                                           
+Number of Hospitalisations in the 2003 SARS outbreak
                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                           
