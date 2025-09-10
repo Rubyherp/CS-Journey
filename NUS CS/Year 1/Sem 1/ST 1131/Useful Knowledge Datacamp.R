@@ -1044,6 +1044,15 @@ Number of Hospitalisations in the 2003 SARS outbreak
 
 
 
+You learned about several key probability distributions and how they apply to real-world scenarios. Specifically, you explored:
+    The exponential distribution, which is used to model the time between events in a Poisson process. You discovered that it's continuous and uses the same lambda (rate) as the Poisson distribution. For instance, if a customer service ticket is generated every 2 minutes on average, the lambda value would be 0.5, representing half a ticket per minute. You learned how to calculate probabilities with the exponential distribution, such as the chance of waiting less than a minute for a new request or more than 4 minutes.
+    The t-distribution, also known as Student's t-distribution, which is similar to the normal distribution but with thicker tails. This means observations are more likely to fall further from the mean. The degrees of freedom parameter affects the thickness of the tails and the standard deviation, with lower degrees of freedom resulting in thicker tails.
+    The log-normal distribution, where variables have a logarithm that is normally distributed, leading to skewed distributions. This distribution applies to various real-world phenomena like the length of chess games or the number of hospitalizations during the 2003 SARS outbreak.
+You also practiced distinguishing between different distributions and identifying which best models various scenarios, enhancing your ability to apply these distributions in practical contexts.
+
+                                                                                           
+
+
 Correlation
 x = Explanatory / Independent variable
 x = Response / Dependent variable
@@ -1081,10 +1090,148 @@ Other variations:
 
 
 
+Relationships between variables
+#In this chapter, you'll be working with a dataset world_happiness containing results from the 2019 World Happiness Report. The report scores various countries based on how happy people in that country are. It also ranks each country on various societal aspects such as social support, freedom, corruption, and others. The dataset also includes the GDP per capita and life expectancy for each country.
+In this exercise, you'll examine the relationship between a country's life expectancy (life_exp) and happiness score (happiness_score) both visually and quantitatively. Both dplyr and ggplot2 libraries are loaded and world_happiness is available.
+
+# Add a linear trendline to scatterplot
+ggplot(world_happiness, aes(life_exp, happiness_score)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+# Correlation between life_exp and happiness_score
+cor(world_happiness$life_exp, world_happiness$happiness_score)
+
+
+
+
+Correlation Caveats
+Non-linear relationships:
+Correlation measure linear relationships only                                                                                           
+
+Transformation:
+                                                                                           
+Log transformation
+msleep %>%
+  mutate(log_bodywt = log(bodywt)) %>%
+  ggplot(aes(log_bodywt, awake)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+Other Transformations
+Log transformation (log(x))
+Square root transformation (sqrt(x))
+Reciprocal transformation (1/x)
+or a combination of these on x and y
+
+Why use a transformation?
+Certain statistical methods rely on variables having a linear relationship like Correlation Coefficient and Linear Regression
+
+Correlation does not imply causation
+                                                                                           
+Confounding:
+Coffee drinkning (x) is associated to smoking (confounder) and lung cancer (y)
+But it is smoking that causes lung cancer
 
 
 
 
 
+#What can't correlation measure?
+#While the correlation coefficient is a convenient way to quantify the strength of a relationship between two variables, it's far from perfect. In this exercise, you'll explore one of the caveats of the correlation coefficient by examining the relationship between a country's GDP per capita (gdp_per_cap) and happiness score.
+                                                                                           
+# Scatterplot of gdp_per_cap and life_exp
+ggplot(world_happiness, aes(gdp_per_cap, life_exp)) +
+  geom_point()
+
+# Correlation between gdp_per_cap and life_exp
+cor(world_happiness$gdp_per_cap, world_happiness$life_exp)
+
+# Create log_gdp_per_cap column
+world_happiness <- world_happiness %>%
+  mutate(log_gdp_per_cap = log(gdp_per_cap))
+
+# Scatterplot of happiness_score vs. log_gdp_per_cap
+ggplot(world_happiness, aes(log_gdp_per_cap, happiness_score)) +
+  geom_point()
+
+# Calculate correlation
+cor(world_happiness$log_gdp_per_cap, world_happiness$happiness_score)
+
+
+
+
+
+Design of experiments
+Vocabulary:
+Experiments aims to answer: What is the effect of the treatment on the response?
+Treatment: Explanatory / Independent variable
+Response: Response / Dependent variable
+
+What is the effect of an advertisement on the number of products purchased?
+Treatment: Advertisement
+Response: Number of products purchased
+
+Controlled Experiments:                                                                                    
+Participants are assigned by researchers to either treatment group or control group
+Treatment group sees advertisement
+Control group does not
+
+Groups should be comparable so that causation can be inferred
+If groups are not comparable, this could lead to confounding (bias)
+E.G
+Treatment group average age: 25
+Control group average age: 50
+Age is a potential confounder
+                                                                                           
+
+The gold standard of experiments will use:                                                                                          
+1. Randomized controlled trial                                                                                          
+Participants are assigned to treatment/control randomly, not based on any other characteristics
+Choosing randomly helps ensure that groups are comparable
+
+2. Placebo
+Resembles treatment, but has no effect
+Participants will not know which group they are in
+In clinical trials, a sugar pill ensure that the effect of the drug is actually due to the drug itself and not the idea of receiving the drug
+
+3. Double-blind trial
+Person administering the treatment/running the study does not know whether the treatment is real or a placebo
+Prevent bias in the response and/or analysis of results
+
+FEWER OPPORTUNITIES FOR BIAS = MORE RELIABLE CONCLUSION ABOUT CAUSATION                                                                                           
+
+
+Observational studies:                                                                                           
+1. Participants are not assigned randomly to groups
+Participants assign themselves, usually based on pre-existing characteristics
+
+2. Many research questions are not conducive to a controlled experiment
+You cannot force someone to smoke or have a disease                                                                                           
+You cannot make someone have certain past behavior 
+
+3. Established association, not causation
+Effects can be confounded by factors that got certain people into the control or treatment group
+There are ways to control for confounders ot get more reliable conclusion about association
+
+                                                                                           
+Longitudinal VS Cross-sectional Studies
+
+Longitudinal Study:
+Participants are followed over a period of time to examine effect of treatment on response
+Effect of age on height is not confounded by generation
+More expensive, results take longer
+
+Cross-sectional Study:
+Data on participants is collected from a single snapshot in time
+Effect of age on height is confounded by generation
+Cheaper, faster, more convenient
+
+
+
+
+
+
+                                                                                           
 
                                                                                            
