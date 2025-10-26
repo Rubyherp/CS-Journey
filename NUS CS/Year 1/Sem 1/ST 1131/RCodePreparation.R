@@ -38,4 +38,24 @@ correlation = cor(m, n) #Correlation between vectors m and n
 sorted = sort(v) #Sorted version of v
 Means_of_Columns = colMeans(imported_data) #Get the mean of every column, if all are numerics
 Get_index = which(imported_data$Gender == "M") #Get all index of the rows from data where the Gender Column == "M"
-
+length_of_data = length(imported_data$Gender) 
+frequency_table = table(imported_data$Gender)
+table_of_proportions = prop.table(frequency_table) #Or type the full code: table(imported_data$Gender)
+table_of_percentages = table_of_proportions * 100 #Or type the full code: prop.table(table(imported_data$Gender)) * 100
+changing_binary_variable_to_names: 
+1. imported_data$Gender = ifelse(imported_data$Gender == "0", "female", "male") #If Gender == "0", replace with "Female", else "Male"
+2. imported_data$gender_as_a_new_variable = ifelse(imported_data$Gender == "0", "female", "male") #This is creating a new variable instead of replacing directly
+3. imported_data$Gender = factor(imported_data$Gender); levels(imported_data$Gender) = c("female", "male") #Convert variable from integers to categories. Then rename levels "0", and "1" to "female", anmd "male"
+barplot = barplot(table(imported_data$Gender), ylab = "Frequency", xlab = "Gender", col = c(2,5), main = "Bar plot of Gender") #Takes in a frequency table
+piechart = pie(table(imported_data$Gender), col = c(2,5), main = "Pie chart of Gender") 
+summaries = summary(imported_data$CA1)
+q30 = quantile(imported_data$CA1, 30) #Not a Frequency table anymore - dealing with quantitative variables 
+IQR = IQR(imported_data$CA1)
+variance = var(imported_data$CA1)
+standard_deviation = sd(imported_data$CA1)
+histogram = hist(imported_data$CA1, prob = TRUE, col = 2, xlab = "CA1 Marks", ylab = "Density", main = "Histogram of CA1 Marks")
+hist(imported_data$CA1[mark < 30], main = "Histogram of Marks")
+hist(imported_data$CA1[mark < 30], prob = TRUE, col = 2, xlab = "CA1 Marks", ylab = "Density", main = "Histogram of CA1 Marks") #plot up to a certain range
+boxplot_stats = boxplot.stats(imported_data$CA1)
+boxplot = boxplot(imported_data$CA1, col = 5, ylab = "CA1 Marks", main = "Box plot of CA1 Marks")
+line = abline(h = median(imported_data$CA1)) #Add a line at the median value
