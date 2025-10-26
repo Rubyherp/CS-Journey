@@ -39,4 +39,3 @@ sorted = sort(v) #Sorted version of v
 Means_of_Columns = colMeans(imported_data) #Get the mean of every column, if all are numerics
 Get_index = which(imported_data$Gender == "M") #Get all index of the rows from data where the Gender Column == "M"
 
-Indexes = which(imported_data$Gender == "M") #Get all indexes of rows of im
