@@ -59,3 +59,30 @@ hist(imported_data$CA1[mark < 30], prob = TRUE, col = 2, xlab = "CA1 Marks", yla
 boxplot_stats = boxplot.stats(imported_data$CA1)
 boxplot = boxplot(imported_data$CA1, col = 5, ylab = "CA1 Marks", main = "Box plot of CA1 Marks")
 line = abline(h = median(imported_data$CA1)) #Add a line at the median value
+contingency_table = table(categorical_data1, categorical_data2) #Contingency table is to show the frequency of multiple variables, compared to a frequency table that shows frequency of 1 variable. 
+#Always table(row, column)
+contingency_table_of_percentages = prop.table(table(categorical_data1, categorical_data2)) * 100
+row_wise_contingency_table_percentage = prop.table(table(categorical_data1, categorical_data2), "categorical_data1") * 100 #Row-wise percentage contingency table. View Topic 2 EDA 5 
+column_wise_contingency_table_percentage = prop.table(table(categorical_data1, categorical_data2), "categorical_data2") * 100 #Column-wise. Notice I swapped to 2 instead of 1 for the name
+
+Example:
+contingency_table = table(cancer, pmh.use) 
+proptab = prop.table(contingency_table, "pmh.use") * 100
+barplot_categorical = (proptab, beside = TRUE, xlab = "PMH Usage", main = " ", col = c("blue", "darkred"), legend = rownames(proptab)) 
+#Beside = TRUE will plot clustered barplots and the clusters are formed by the column of the object 'proptab'.  If want consider the percentage of having cancer in each grp of PMH, then "pmh.use" 
+#should be arrange in the column of "proptab", and percentages should be column-wise
+#Compare 2 bars for this graph - those are the percentages of having cancer for 2 grps: PMH users, and non-users
+contingency_table2 = table(pmh.use, cancer) 
+proptab = prop.table(contingency_table, "pmh.use") * 100
+barplot_categorical = (proptab, beside = TRUE, xlab = "Cancer", main = " ", col = c("blue", "darkred"), legend = rownames(proptab)) 
+#Compare percentages in the cluster "Present" of the figure. Those are the percentages of having cancer for grp of PMH user and non-user
+barplot_categorical_without_beside = (proptab, xlab = "Cancer", main = " ", col = c("blue", "darkred"), legend = rownames(proptab)) # This is stacked by default
+
+box_plot_one_categorical_one_quantitative = boxplot(bc$agemenop~cancer, col = c(2,5), ylab = "Age at Menopause") #Notice the ~. boxplot(x~y). x is categorical, y is quantitative
+outlier_boxplot = boxplot(bc$agemenop~cancer)$out #Values of all outliers
+outlier_boxplot_each_group = boxplot(bc$agemenop~cancer)$group
+index_outlier_of_group_1 = which(outlier_boxplot_each_group == 1) #Index of outliers in group == 1
+outlier_boxplot_group==1 = boxplot(bc$agemenop~cancer)$out[which(outlier_boxplot_each_group == 1)]
+scatterplot_1_variable = plot(hdb$floor_area, hdb$resale_price, col = 2) #Quantitative
+scatterplot_2_variable = plot(hdb$resale_price ~ hdb$floor_area, col = 5) #2 Quantitative variable. plot(x~y)
+correlation = cor(hdb$floor_area, hdb$resale_price)
