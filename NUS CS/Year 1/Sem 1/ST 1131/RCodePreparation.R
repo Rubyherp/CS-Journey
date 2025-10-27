@@ -65,7 +65,7 @@ contingency_table_of_percentages = prop.table(table(categorical_data1, categoric
 row_wise_contingency_table_percentage = prop.table(table(categorical_data1, categorical_data2), "categorical_data1") * 100 #Row-wise percentage contingency table. View Topic 2 EDA 5 
 column_wise_contingency_table_percentage = prop.table(table(categorical_data1, categorical_data2), "categorical_data2") * 100 #Column-wise. Notice I swapped to 2 instead of 1 for the name
 
-Example:
+Example 1: Plotting
 contingency_table = table(cancer, pmh.use) 
 proptab = prop.table(contingency_table, "pmh.use") * 100
 barplot_categorical = (proptab, beside = TRUE, xlab = "PMH Usage", main = " ", col = c("blue", "darkred"), legend = rownames(proptab)) 
@@ -101,3 +101,21 @@ normal_quantile_90thpercentile_q0.9 = qnorm(0.9, 100, 15) #0.9 is the probabilit
 #if want in between
 normal_probability_P(50 <= X <= 75) = pnorm(75, 100, 15) - pnorm(50, 100, 15)
 round_off_decimal_place = round(vector, num_of_decimal_place) #From vector V, round off each value to a decimal place
+
+Example 2: Distributions
+set.seed(999)
+#Given N(70, 10^2) 
+sample1 = rnorm(12, 70, 10); sample1 #Generate 12 observations
+sample1_rounded1dp = round(sample1, 1); sample1_rounded1dp #Round to 1 dp
+mean = mean(sample1_rounded1dp); mean #Get the mean for 1 sample
+
+N.10000samples = matrix(rnorm(12000, 70, 10), 10000, 12); N.10000samples #N(samples) = 10000, n(sample size) = 12
+sample.means = rowMeans(N.10000samples); sample.means #Get the mean of each row (10000). ie X1...Xn 
+mean(sample.means) #Should be around 70
+sd(sample.means) #should be around 10/ sqrt(12). NOTICE: sigma/sqrt(n), n = 12 !!! not N = 10000
+histogram = hist(sample.means, prob = TRUE, col = "steelblue", xlab = "Histogram of Midterm Marks", ylab = "Density")
+
+#Given N(70, 5^2) #Changed sd to 5
+sample_10000_size_12 = matrix(rnorm(12000, 70, 5), 10000, 12); sample_10000_size_12 
+sample_means = rowMeans(sample_10000_size_12); rowmeans
+histogram_sd5 = hist(sample_means, prob = TRUE, col = "darkred", xlab = "Histogram of Midterm Marks", ylab = "Density")
