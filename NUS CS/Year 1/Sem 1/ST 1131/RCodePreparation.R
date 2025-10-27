@@ -86,3 +86,18 @@ outlier_boxplot_group==1 = boxplot(bc$agemenop~cancer)$out[which(outlier_boxplot
 scatterplot_1_variable = plot(hdb$floor_area, hdb$resale_price, col = 2) #Quantitative
 scatterplot_2_variable = plot(hdb$resale_price ~ hdb$floor_area, col = 5) #2 Quantitative variable. plot(x~y)
 correlation = cor(hdb$floor_area, hdb$resale_price)
+
+vector_of_10_random_binomial_observations = rbinom(10, n, p) #10 obeservations. n is number of trials, p is probability of each independent trials
+#Given X ~ Bin(3889, 0.531)
+binomial_probability_P(X <= 2000) = pbinom(2000, 3889, 0.531, lower.tail = TRUE) 
+binomial_probability_P(X > 2000) = pbinom(2000, 3889, 0.531, lower.tail = FALSE) #Not >= !!!!!!
+binomial_quantile_P(x <= q0.9) = qbinom(0.9, n, p) #0.9 is the probability
+
+vector_of_10_random_normal_observations = rnorm(10, mu, sd) #mu = mean
+#Given X ~ N(100, 15^2)
+normal_probability_P(X <= 115) = pnorm(115, 100, 15, lower.tail = TRUE) #Not variance !!!! 
+normal_probability_P(X >= 90) = pbinom(90, 100, 15, lower.tail = FALSE) 
+normal_quantile_90thpercentile_q0.9 = qnorm(0.9, 100, 15) #0.9 is the probability
+#if want in between
+normal_probability_P(50 <= X <= 75) = pnorm(75, 100, 15) - pnorm(50, 100, 15)
+round_off_decimal_place = round(vector, num_of_decimal_place) #From vector V, round off each value to a decimal place
