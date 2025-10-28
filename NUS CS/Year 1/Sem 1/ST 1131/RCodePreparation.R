@@ -119,3 +119,17 @@ histogram = hist(sample.means, prob = TRUE, col = "steelblue", xlab = "Histogram
 sample_10000_size_12 = matrix(rnorm(12000, 70, 5), 10000, 12); sample_10000_size_12 
 sample_means = rowMeans(sample_10000_size_12); rowmeans
 histogram_sd5 = hist(sample_means, prob = TRUE, col = "darkred", xlab = "Histogram of Midterm Marks", ylab = "Density")
+
+Example 3: Exponential Distribution
+#give mean, lambda =  5000. For Exponential dist, lambda(mean) = sigma. rate = 1/lambda. But for Poisson dist, mean = variance instead.
+N.1000.n50 = matrix(rexp(50000, rate = 1/5000), 1000, 50); N.1000.n50
+Xbar_sample.mean = rowMeans(N.1000.n50); Xbar_sample.mean
+mean(Xbar_sample.mean) #should be close to lambda = 5000
+sd(Xbar_sample.mean) #should be close to lamda/sqrt(n) = 707
+histogram_exp = hist(Xbar_sample.mean, col = "green", xlab = "Sampling Distribution of X-bar")
+
+N.1000.n7 = matrix(rexp(7000, rate = 1/5000), 1000, 7); N.1000.n7
+Xbar_sample.mean.n7 = rowMeans(N.1000.n7); Xbar_sample.mean.n7
+mean(Xbar_sample.mean.n7)
+sd(Xbar_sample.mean.n7)
+hist_exp2 = hist(Xbar_sample.mean.n7, col = "pink", xlab = "Sampling Distribution of X-bar")
