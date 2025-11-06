@@ -133,3 +133,43 @@ Xbar_sample.mean.n7 = rowMeans(N.1000.n7); Xbar_sample.mean.n7
 mean(Xbar_sample.mean.n7)
 sd(Xbar_sample.mean.n7)
 hist_exp2 = hist(Xbar_sample.mean.n7, col = "pink", xlab = "Sampling Distribution of X-bar")
+
+t_dist_quantile = qt(0.975, 6), when df = n-1 = 6, at q 0.975 quantile
+#Used to find Confidence Interval in its formula t(n-1),q(1-α/2), α = 1 100x% CI. Say 95% CI, then α = 0.05.
+#T-test
+t.test(data_vector, mu = μ0, alternative = "two.sided", conf.level = 0.95) #alternative = "two.sided" and conf.level = 0.95 is DEFAULT. Change "two.sided" to "greater" for right-sided or "less" for left-sided
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
