@@ -150,8 +150,41 @@ t.test(data_vector1, data_vector2, mu = 0, alternative = "greater", paired = TRU
 or t.test(diff, mu = 0, alternative = "greater") #if dw to use the paired one diff is the difference btw the 2 dependent variables
 t.test(diff, mu = 0, alternative = "two.sided", conf.level = 0.99) #To see the confidence interval
 
+#QQ plot
+qqnorm(bill.Gentoo$length, pch = 20) #pch = 20 means use solid dots (small filled circles) for the points on the Q-Q plot.
+qqline(bill.Gentoo$length, col = "red")
+
+#| `pch` | Symbol | Description                                                 |
+#| :---: | :----: | :---------------------------------------------------------- |
+#|   0   |    □   | open square                                                 |
+#|   1   |    ○   | open circle                                                 |
+#|   2   |    △   | open triangle                                               |
+#|   3   |    +   | plus sign                                                   |
+#|   4   |    ×   | cross                                                       |
+#|   5   |    ◊   | open diamond                                                |
+#|   6   |    ▲   | filled triangle                                             |
+#|   15  |    ■   | filled square                                               |
+#|   16  |    ●   | filled circle (default for ggplot2)                         |
+#|   17  |    ▲   | filled triangle                                             |
+#|   18  |    ◆   | filled diamond                                              |
+#|   19  |    ●   | larger filled circle                                        |
+#|   20  |    •   | **small filled circle** (often used for clean scatterplots) |
 
 
+#Shapiro Wilk Test
+shapiro.test(bill.Gentoo$length) #Want larger p-value. cuz h0 = sample is from a Normal Dist. So we dw to reject H0
+
+#Linear Model
+m1 = lm(formula = y ~ x, data = data)
+summary(m1)
+
+#predicting value
+new1 = data.frame(Present_Price = 20) # create a new df with 1 pt
+new2 = data.frame(Present_Price = c(20, 40)) # create a new df with 2 pt
+predict(m1, newdata = new1)
+
+
+                      
 
 
 
