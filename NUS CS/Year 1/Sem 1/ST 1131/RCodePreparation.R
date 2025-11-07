@@ -139,16 +139,16 @@ t_dist_quantile = qt(0.975, 6), when df = n-1 = 6, at q 0.975 quantile
 #T-test
 t.test(data_vector, mu = μ0, alternative = "two.sided", conf.level = 0.95) #alternative = "two.sided" and conf.level = 0.95 is DEFAULT. Change "two.sided" to "greater" for right-sided or "less" for left-sided
 
+#Equal Variance Test
+var.test(x, y, alternative = "two.sided", ratio = 1, conf.level = 0.95) #ratio default = 1. conf.lvl default = 0.95
 
+#T-test 2 sided for 2 INDEPENDENT variable
+t.test(data_vector1, data_vector2, alternative = "two.sided", conf.level = 0.95, var.equal = TRUE) #!! var.equal = False by default
 
-
-
-
-
-
-
-
-
+#T-test 2 sided for 2 dependent variable
+t.test(data_vector1, data_vector2, mu = 0, alternative = "greater", paired = TRUE) #!!! mu is usually 0. Must include paired = TRUE
+or t.test(diff, mu = 0, alternative = "greater") #if dw to use the paired one diff is the difference btw the 2 dependent variables
+t.test(diff, mu = 0, alternative = "two.sided", conf.level = 0.99) #To see the confidence interval
 
 
 
