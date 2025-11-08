@@ -1158,6 +1158,7 @@ function infstream3(n){
 
 const streaminginf1 = infstream3(1);
 const streaminginf2 = infstream3(2);
+const streaminginf3 = infstream3(3);
 // eval_stream(streaminginf1, 5);
 
 function zip_stream(s1, s2){
@@ -1166,7 +1167,36 @@ function zip_stream(s1, s2){
 
 const zippinginf1and2 = zip_stream(streaminginf1, streaminginf2);
 
-eval_stream(zippinginf1and2, 5);
+// eval_stream(zippinginf1and2, 5);
+
+
+function zip_list_of_streams(xs){
+    function helper(streams){
+        const first_stream = head(streams);
+        const rest_stream = tail(streams);
+        const rotate_stream = append(rest_stream, list(stream_tail(first_stream)));
+        return pair(head(first_stream), () => helper(rotate_stream));
+    }
+    return helper(xs);
+}
+
+const listofstreams = list(streaminginf1, streaminginf2, streaminginf3);
+const zippedlistofstreams = zip_list_of_streams(listofstreams);
+
+// eval_stream(zippedlistofstreams, 10);
+
+
+
+function partial_sums(integers){
+    const partials = pair(head(integers), () => add_stream(stream_tail(integers), partials));
+    return partials;
+}
+
+const integer1stream = integers_from(1);
+const partials = partial_sums(integer1stream);
+// eval_stream(partials, 5);
+
+
 
 
 const xs = list(1,3,5);
