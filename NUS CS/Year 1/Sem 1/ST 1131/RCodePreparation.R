@@ -183,8 +183,97 @@ new1 = data.frame(Present_Price = 20) # create a new df with 1 pt
 new2 = data.frame(Present_Price = c(20, 40)) # create a new df with 2 pt
 predict(m1, newdata = new1)
 
+#Confidence Intervals for β0, β1
+confint(m1, level = 0.95) #CI for all coef in m1
+confint(m1, 'Present_Price', level = 0.95) # CI for coef of Present Price only
 
-                      
+#Predicting value by a confidence interval
+predict(m1, newdata = new2, interval = "confidence", level = 0.95)
+
+#F Statistics
+# Example: Calculate p-value using pf()
+pf(F_statistic, df1, df2, lower.tail = FALSE)
+
+# Example: Find the P-value for an F-statistic of 3.30 with 2 and 29 DF
+p_value <- pf(3.30, df1 = 2, df2 = 29, lower.tail = FALSE)
+print(p_value)
+
+# Example: Find the F critical value for alpha = 0.05 with 2 and 29 DF
+f_critical <- qf(p = 0.05, df1 = 2, df2 = 29, lower.tail = FALSE)
+print(f_critical)
+
+#List all raw residuals of m1
+raw.res = m1$res
+
+#List all standardized residuals of m1
+SR = rstandard(m1)
+
+#Get index of outliers
+outliers = which(SR > 3 | SR <- 3)
+
+#Cook's Distance
+C = cooks.distance(m1)
+influential_point = which(C > 1)
+
+#Linear model with categorical variable with >= 3 categories
+#want to first factor it
+hdb$flat_type = factor(hdb$flat_type)
+# Then create model
+attach(hdb)
+m2 = lm(resale_price ~ floor_area_sqm + flat_type, data = hdb)
+summary(m2)
+
+#Adding Higher order terms like x^2
+M = lm(y ~ x + I(x^2))
+m3 = lm(resale_price ~ floor_area_sqm + I(floor_area_sqm^2), data = hdb)
+
+#Adding Interaction terms
+M = lm(y ~ x1 + x2 + x1*x2) === M = lm(y ~ x1 + x2 + x1:x2)
+=== M = lm(y ~ x1*x2)
+#If put the interaction terms only as shown above, R will automatically include the individual variables
+#So if to to include use this
+M = lm(y ~ x1 + x1:x2) # Use x1 : x2 to exclude x2
+
+#Transforming response variable
+y1 = log(y) # create a new response variable
+M = lm(y1 ~ x)
+#or
+M = lm(log(y) ~ x)
+M = lm(sqrt(y) ~ x)
+M = lm(1/y ~ x)
+
+#Anova 
+anova(m2) #Order in ANOVA table is impt
+
+#How to predict price for 2 flats, a 5 room that is 120 sqm and 3 room that is 88 sqm using model m2?
+#1
+new.point = data.frame(floor_area_sqm = c(120, 88), 
+                       flat_type = c("5 Room", "3 Room")) # make sure type correctly
+predict(m2, newdata = new.point)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
