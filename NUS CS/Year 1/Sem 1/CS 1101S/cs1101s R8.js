@@ -1,6 +1,5 @@
 function make_withdraw(balance, password) {
-    let count = 0
-    ;
+    let count = 0;
     function withdraw(amount, verfication_password) {
         if (count >= 3){
             return "Account Locked";
@@ -18,8 +17,7 @@ function make_withdraw(balance, password) {
                 return "Wrong password";
                 }
         }
-
-        }
+    }
     return withdraw;
 }
 //Q1 part 1
@@ -45,10 +43,10 @@ let commission = 25; // my commission in dollars
 // return a calculator for total price
 // total price = (commission + cost) * (1 + tax_rate)
 function make_price_calculator(tax_rate) {
-function calculator(cost) {
-return (commission + cost) * (1 + tax_rate);
-}
-return calculator;
+    function calculator(cost) {
+        return (commission + cost) * (1 + tax_rate);
+        }
+    return calculator;
 }
 const calc = make_price_calculator(0.07);
 calc(75); // commission = 25
