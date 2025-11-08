@@ -129,23 +129,25 @@ function filter_array_2(pred, A){
 filter_array_2(x => x % 2 === 0, [1,2,3,4,5]);
 
 
-// functional but incomplete
-
+// functional
 function filter_array_3(pred, A){
     const result = [];
     const len = array_length(A);
-    
     function iter(count_R, count_A){
         if (count_A < len){
             if (pred(A[count_A])){
-                R[count_R] = A[count_A];
-                iter(count_R + 1, )
+                result[count_R] = A[count_A];
+                return iter(count_R + 1, count_A + 1);
+            } else{
+                return iter(count_R, count_A + 1);
             }
         }
-    }
-    return result;
+        return result;
+        }
+    return iter(0, 0);
 }
-filter_array_2(x => x % 2 === 0, [1,2,3,4,5]);
+    
+filter_array_3(x => x % 2 === 0, [1,2,3,4,5]);
 
 
 
