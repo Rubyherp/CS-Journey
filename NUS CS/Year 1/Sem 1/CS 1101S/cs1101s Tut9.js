@@ -8,7 +8,7 @@ function count_pairs(x){
             return undefined;
         }
         else{
-            pairs = append(y, pairs);
+            pairs = pair(y, pairs);
             check(head(y));
             check(tail(y));
         }
