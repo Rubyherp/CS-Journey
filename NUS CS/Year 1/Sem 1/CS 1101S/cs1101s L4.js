@@ -29,12 +29,13 @@ function add_rational(x,y){
 function gcd(a,b){
     return b === 0 ? a : gcd(b, a%b);
 }
-// Code might be wrong
+
 function new_make_rational(x,y){
     const g = gcd(x,y);
     return pair(x/g, y/g);
 }
-//const one_half = make_rational(1,2);
+//const one_half = new_make_rational(200,120);
+one_half;
 
 
 
