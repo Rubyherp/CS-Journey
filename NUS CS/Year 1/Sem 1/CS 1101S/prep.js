@@ -1276,5 +1276,115 @@ const multiplystreams = mul_streams(createinfstream, nums);
 
 
 
+//===============================================================
+// TASK 2A
+//===============================================================
+function route_distance(mat, route) {
+function add_dist(rou) {
+if (is_null(rou) || is_null(tail(rou))) {
+return 0;
+} else {
+return mat[head(rou)][head(tail(rou))] + add_dist(tail(rou));
+}
+}
+return add_dist(route);
+}
+//===============================================================
+// TASK 2B
+//===============================================================
+function shortest_paper_route(n, mat, start) {
+// You can keep, modify or remove the permutations function.
+function permutations(ys) {
+return is_null(ys)
+? list(null)
+: accumulate(append, null,
+map(x => map(p => pair(x, p),
+permutations(remove(x, ys))),
+ys));
+}
+const others = remove(start, enum_list(0, n - 1));
+const routes = permutations(others);
+let min_dist = Infinity;
+let min_route = null;
+for (let p = routes; !is_null(p); p = tail(p)) {
+const pp_route = pair(start, append(head(p), list(start)));
+const route_dist = route_distance(mat, pp_route);
+if (route_dist < min_dist) {
+min_dist = route_dist;
+min_route = pp_route;
+} else { }
+}
+return pair(min_route, min_dist);
+}
+//===============================================================
+// TASK 3A
+//===============================================================
+function make_postfix_exp(bae) {
+const pfe = [];
+let next = 0;
+function convert(sub_bae) {
+if (is_number(sub_bae)) {
+pfe[next] = sub_bae;
+next = next + 1;
+} else {
+convert(sub_bae[0]);
+convert(sub_bae[2]);
+pfe[next] = sub_bae[1];
+next = next + 1;
+}
+}
+convert(bae);
+return pfe;
+}
+//===============================================================
+// TASK 3B
+//===============================================================
+function eval_postfix_exp(pfe) {
+let next = array_length(pfe) - 1;
+function evaluate() {
+const token = pfe[next];
+next = next - 1;
+if (is_number(token)) {
+return token;
+} else {
+const op = token;
+const right = evaluate();
+const left = evaluate();
+if (op === "+") {
+return left + right;
+} else if (op === "-") {
+return left - right;
+} else if (op === "*") {
+return left * right;
+} else {
+return left / right;
+}
+}
+}
+return evaluate();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
