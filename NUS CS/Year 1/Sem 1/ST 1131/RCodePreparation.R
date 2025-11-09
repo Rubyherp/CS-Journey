@@ -252,8 +252,31 @@ new.point = data.frame(floor_area_sqm = c(120, 88),
 predict(m2, newdata = new.point)
 
 
+##################### MISC #######################
+# Boxplot stats
+boxplot(mark, col = 5, main = "Boxplot of Final Mark", ylab = "Final Mark")
+# boxplot has outliers.
+box_stats = boxplot.stats(mark) # this summarises the boxplot
+box_stats
+box_stats$stats # this shows us the cut-offs for the boxplot; the whisker and box information
+box_stats$out # the marks which are outliers
 
 
+# " %in % "
+# Check if a single value is in a vector
+value <- 5
+vector_data <- c(1, 2, 3, 4, 5, 6)
+value %in% vector_data # Returns TRUE
+
+# Check if multiple values are in a vector
+values_to_check <- c(3, 7, 5)
+vector_data %in% values_to_check # Returns c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
+
+# Subsetting a data frame based on column values
+df <- data.frame(ID = c(101, 102, 103, 104), Name = c("Alice", "Bob", "Charlie", "David"))
+selected_ids <- c(101, 103)
+df_subset <- df[df$ID %in% selected_ids, ]
+print(df_subset)
 
 
 
