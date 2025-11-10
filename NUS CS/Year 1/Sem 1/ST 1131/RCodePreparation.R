@@ -338,7 +338,12 @@ summary(model)
 
 
 
-
+| Context                            | df formula                                   | Notes                      |
+| ---------------------------------- | -------------------------------------------- | -------------------------- |
+| Sample variance / SD               | n − 1                                        | 1 estimated mean           |
+| Simple regression (1 predictor)    | n − 2                                        | 1 mean + 1 slope estimated |
+| Multiple regression (p predictors) | n − (p + 1)                                  | +1 for intercept           |
+| Regression ANOVA                   | Total: n−1; Regression: p; Residual: n−(p+1) | Splits total variation     |
 
 
 
