@@ -1198,6 +1198,23 @@ const partials = partial_sums(integer1stream);
 
 
 
+function frame(n) {
+    if (n === 1) {
+        return list(list(1));
+    } else {
+        const inner = frame(n - 1);
+        const len = length(head(inner)) + 2;
+        const top = build_list(x => n, len);
+        const middle = map(row => append(list(n), append(row, list(n))), inner);
+        return append(list(top), append(middle, list(top)));
+    }
+}
+
+//display_list(frame(3));
+
+
+
+
 
 const xs = list(1,3,5);
 const ys = list(2,4);
@@ -1222,6 +1239,8 @@ const createinfstream2 = infstream_of_xs_model(list(1,2,3));
 const nums = int_from_stream(1);
 const addingstreams = add_stream(createinfstream, nums);
 const multiplystreams = mul_streams(createinfstream, nums);
+
+
 
 
 
