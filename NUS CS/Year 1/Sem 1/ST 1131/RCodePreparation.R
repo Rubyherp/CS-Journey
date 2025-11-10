@@ -281,13 +281,60 @@ print(df_subset)
 
 
 
+# SR vs fitted values
+# 1. Get standardized residuals
+std_resid <- rstandard(model)
+
+# 2. Get fitted (predicted) values
+fitted_vals <- fitted(model)
+
+# 3. Plot manually
+plot(fitted_vals, std_resid, # or swap with model$fitted.values
+     main = "Standardized Residuals vs Fitted Values",
+     xlab = "Fitted Values",
+     ylab = "Standardized Residuals",
+     pch = 20, col = "blue")
+
+# 4. Add a horizontal line at 0
+abline(h = 0, col = "red", lwd = 2)
 
 
 
 
+# SR vs x
+model <- lm(y ~ x1 + x2 + x3 + x4, data = mydata)
+
+# Standardized residuals
+std_resid <- rstandard(model)
+
+# Loop over predictors to plot each
+for (xname in c("x1", "x2", "x3", "x4")) {
+  plot(mydata[[xname]], std_resid,
+       main = paste("Standardized Residuals vs", xname),
+       xlab = xname,
+       ylab = "Standardized Residuals",
+       pch = 20, col = "blue")
+  abline(h = 0, col = "red", lwd = 2)
+}
 
 
 
+# Step 1: Convert to factor
+mydata$gender <- factor(mydata$gender)
+
+# Step 2: Set baseline to "Male"
+mydata$gender <- relevel(mydata$gender, ref = "Male")
+
+# Fit model
+model <- lm(y ~ gender, data = mydata)
+summary(model)
+
+
+| Before relevel             | After relevel                |
+| -------------------------- | ---------------------------- |
+| Baseline = Female          | Baseline = Male              |
+| Intercept = mean of Female | Intercept = mean of Male     |
+| genderMale = Male − Female | genderFemale = Female − Male |
 
 
 
