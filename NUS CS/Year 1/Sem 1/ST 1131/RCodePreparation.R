@@ -209,7 +209,7 @@ raw.res = m1$res
 SR = rstandard(m1)
 
 #Get index of outliers
-outliers = which(SR > 3 | SR <- 3)
+outliers = which(SR > 3 | SR < -3)
 
 #Cook's Distance
 C = cooks.distance(m1)
