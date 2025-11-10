@@ -326,7 +326,7 @@ for (xname in c("x1", "x2", "x3", "x4")) {
 }
 
 
-
+#factor and relevel
 # Step 1: Convert to factor
 mydata$gender <- factor(mydata$gender)
 
