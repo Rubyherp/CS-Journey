@@ -192,7 +192,7 @@ predict(m1, newdata = new2, interval = "confidence", level = 0.95)
 
 #F Statistics
 # Example: Calculate p-value using pf()
-pf(F_statistic, df1, df2, lower.tail = FALSE)
+pf(F_statistic_value, df1, df2, lower.tail = FALSE)
 
 # Example: Find the P-value for an F-statistic of 3.30 with 2 and 29 DF
 p_value <- pf(3.30, df1 = 2, df2 = 29, lower.tail = FALSE)
