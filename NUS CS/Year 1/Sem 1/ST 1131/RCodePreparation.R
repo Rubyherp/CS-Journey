@@ -245,6 +245,14 @@ M = lm(1/y ~ x)
 #Anova 
 anova(m2) #Order in ANOVA table is impt
 
+#How to analyze it
+#Check the p-value
+#If p < 0.05 (or your alpha) → reject null → at least one group mean is significantly different
+#If p ≥ 0.05 → fail to reject null → no significant difference
+#Optional post-hoc tests (if p < 0.05)
+#ANOVA tells you there is a difference, but not which groups differ.
+#Use TukeyHSD() in R for pairwise comparisons:
+
 #How to predict price for 2 flats, a 5 room that is 120 sqm and 3 room that is 88 sqm using model m2?
 #1
 new.point = data.frame(floor_area_sqm = c(120, 88), 
