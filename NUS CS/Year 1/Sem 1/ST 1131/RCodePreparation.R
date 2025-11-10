@@ -354,13 +354,31 @@ summary(model)
 | Regression ANOVA                   | Total: n−1; Regression: p; Residual: n−(p+1) | Splits total variation     |
 
 
+#as.factor()
+x <- c(2, 3, 2, 1)
+as.factor(x)
+# Levels: 1 2 3
+
+#factor()
+x <- c(2, 3, 2, 1)
+factor(x, levels = c(3, 2, 1), labels = c("Three", "Two", "One"))
+# Levels: Three Two One
+#You can control:
+#levels → the order of factor levels
+#labels → rename the levels
+#ordered = TRUE → create an ordinal factor
 
 
+| Feature               | `as.factor()`     | `factor()` |
+| --------------------- | ----------------- | ---------- |
+| Convert existing vec  | ✅                 | ✅          |
+| Specify levels/order  | ❌ (default order) | ✅          |
+| Rename levels         | ❌                 | ✅          |
+| Create ordered factor | ❌                 | ✅          |
 
-
-
-
-
+#Quick rule of thumb
+#Use as.factor() if you just want R to treat a variable as categorical, with default ordering.
+#Use factor() if you want control over levels, order, or labels, e.g., for plotting or regression baselines.
 
 
 
