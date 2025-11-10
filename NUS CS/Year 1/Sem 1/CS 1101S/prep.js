@@ -1212,6 +1212,90 @@ function frame(n) {
 
 //display_list(frame(3));
 
+function max_flies_to_eat(arr){
+    const rowlen = array_length(arr);
+    const collen = array_length(arr[0]);
+    function count(r, c){
+        if (c <0 || c > collen- 1) { return 0; }
+        if (r === rowlen -1) { return arr[r][c]; }
+        
+        const downleft = count(r+1, c-1);
+        const down = count(r + 1, c);
+        const downright = count(r + 1, c+1);
+        
+        return arr[r][c] + math_max(downleft, down, downright);
+        
+    }
+    let maxcount = 0;
+    for (let i = 0; i < collen; i = i + 1){
+        maxcount = math_max(maxcount, count(0, i));
+    }
+    return maxcount;
+}
+
+const tile_flies = [[3, 1, 7, 4, 2],
+                    [2, 1, 3, 1, 1],
+                    [1, 2, 2, 1, 8],
+                    [2, 2, 1, 5, 3],
+                    [2, 1, 4, 4, 4],
+                    [5, 7, 2, 5, 1]];
+
+//max_flies_to_eat(tile_flies); // Expected result: 32
+
+
+
+
+//Memoization 2-D of max_flies_to_eat
+
+const mem = [];
+function read(n, k) {
+    return mem[n] === undefined
+        ? undefined
+        : mem[n][k];
+}
+
+function write(n, k, value) {
+    if (mem[n] === undefined) {
+        mem[n] = [];
+    }
+    mem[n][k] = value;
+}
+
+function max_flies_to_eat(arr){
+    const rowlen = array_length(arr);
+    const collen = array_length(arr[0]);
+    function count(r, c){
+        if (c <0 || c > collen- 1) { return 0; }
+        if (!is_undefined(read(r, c))){
+            return read(r, c);
+        }
+        if (r === rowlen -1) { return arr[r][c]; }
+        
+        const downleft = count(r+1, c-1);
+        const down = count(r + 1, c);
+        const downright = count(r + 1, c+1);
+        
+        const result = arr[r][c] + math_max(downleft, down, downright);
+        write(r,c,result);
+        return result;
+            
+    }
+    let maxcount = 0;
+    for (let i = 0; i < collen; i = i + 1){
+        maxcount = math_max(maxcount, count(0, i));
+    }
+    return maxcount;
+}
+
+const tile_flies = [[3, 1, 7, 4, 2],
+                    [2, 1, 3, 1, 1],
+                    [1, 2, 2, 1, 8],
+                    [2, 2, 1, 5, 3],
+                    [2, 1, 4, 4, 4],
+                    [5, 7, 2, 5, 1]];
+
+//max_flies_to_eat(tile_flies); // Expected result: 32
+
 
 
 
